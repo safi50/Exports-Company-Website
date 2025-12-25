@@ -59,6 +59,19 @@ const productCategories = [
 const TradeFocus = () => {
   const [currentIndex, setCurrentIndex] = useState(productCategories.length)
   const [isTransitioning, setIsTransitioning] = useState(true)
+  const [touchStart, setTouchStart] = useState(0)
+  const [touchEnd, setTouchEnd] = useState(0)
+  const [isMobile, setIsMobile] = useState(false)
+
+  // Check if mobile on mount and resize
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 640)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   // Create infinite loop by tripling the array
   const infiniteCards = [...productCategories, ...productCategories, ...productCategories]
@@ -71,6 +84,31 @@ const TradeFocus = () => {
   const prevSlide = () => {
     setIsTransitioning(true)
     setCurrentIndex((prev) => prev - 1)
+  }
+
+  // Touch handlers for swipe gestures
+  const handleTouchStart = (e) => {
+    setTouchStart(e.targetTouches[0].clientX)
+    setTouchEnd(e.targetTouches[0].clientX)
+  }
+
+  const handleTouchMove = (e) => {
+    setTouchEnd(e.targetTouches[0].clientX)
+  }
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return
+    
+    const distance = touchStart - touchEnd
+    const isLeftSwipe = distance > 50
+    const isRightSwipe = distance < -50
+
+    if (isLeftSwipe) {
+      nextSlide()
+    }
+    if (isRightSwipe) {
+      prevSlide()
+    }
   }
 
   // Reset position when reaching cloned cards
@@ -116,35 +154,50 @@ const TradeFocus = () => {
         {/* Left Arrow */}
         <button
           onClick={prevSlide}
-          className='absolute left-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-black-gradient border border-[#3F3E45] flex items-center justify-center text-white hover:border-cyan-400 transition-all duration-300'
+          className='absolute left-2 sm:left-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black-gradient border border-[#3F3E45] flex items-center justify-center text-white hover:border-cyan-400 active:border-cyan-400 transition-all duration-300 touch-manipulation'
           aria-label="Previous"
         >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
 
         {/* Cards Container */}
-        <div className='mx-16 px-4'>
+        <div className='mx-4 sm:mx-16'>
           <div 
-            className={`flex gap-6 ${isTransitioning ? 'transition-transform duration-500 ease-out' : ''}`}
-            style={{ transform: `translateX(-${currentIndex * 33.33}%)` }}
+            className='overflow-visible touch-pan-y'
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
           >
+            <div 
+              className={`flex gap-4 sm:gap-6 ${isTransitioning ? 'transition-transform duration-500 ease-out' : ''}`}
+              style={{ 
+                transform: isMobile
+                  ? `translateX(calc(-${currentIndex * 100}% - ${currentIndex * 16}px))` 
+                  : `translateX(-${currentIndex * 33.33}%)`
+              }}
+            >
             {infiniteCards.map((category, index) => {
               // Calculate distance from center card
-              const centerPosition = currentIndex + 1
-              const distance = Math.abs(index - centerPosition)
+              const distance = Math.abs(index - currentIndex)
               const isCenter = distance === 0
-              const opacity = isCenter ? 1 : distance === 1 ? 0.7 : 0.4
-              const scale = isCenter ? 1.08 : 0.95
+              
+              // Desktop scaling and opacity
+              const desktopOpacity = isCenter ? 1 : distance === 1 ? 0.7 : 0.4
+              const desktopScale = isCenter ? 1.08 : 0.95
+              
+              // Mobile - simpler approach
+              const mobileOpacity = isCenter ? 1 : 0.3
+              const mobileScale = 1
 
               return (
                 <div
                   key={`${category.id}-${index}`}
-                  className='flex-shrink-0 w-[calc(33.33%-16px)] min-w-[260px] transition-all duration-500'
+                  className='flex-shrink-0 w-full sm:w-[calc(33.33%-16px)] sm:min-w-[260px] transition-all duration-500'
                   style={{ 
-                    opacity,
-                    transform: `scale(${scale})`
+                    opacity: isMobile ? mobileOpacity : desktopOpacity,
+                    transform: isMobile ? `scale(${mobileScale})` : `scale(${desktopScale})`
                   }}
                 >
                   <div className={`relative h-[400px] bg-black-gradient rounded-[20px] p-6 border transition-all duration-300 overflow-hidden group ${
@@ -190,15 +243,16 @@ const TradeFocus = () => {
               )
             })}
           </div>
+          </div>
         </div>
 
         {/* Right Arrow */}
         <button
           onClick={nextSlide}
-          className='absolute right-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-black-gradient border border-[#3F3E45] flex items-center justify-center text-white hover:border-cyan-400 transition-all duration-300'
+          className='absolute right-2 sm:right-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black-gradient border border-[#3F3E45] flex items-center justify-center text-white hover:border-cyan-400 active:border-cyan-400 transition-all duration-300 touch-manipulation'
           aria-label="Next"
         >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
           </svg>
         </button>

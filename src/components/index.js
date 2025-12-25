@@ -1,4 +1,4 @@
-import Billing from './Billing'
+import TradeFocus from './TradeFocus'
 import Business from './Business'
 import CardDeal from './CardDeal'
 import Clients from './Clients'
@@ -11,7 +11,7 @@ import Stats from './Stats'
 import Testimonials from './Testimonials'
 
 export {
-    Billing,
+    TradeFocus,
     Business,
     CardDeal,
     Clients,

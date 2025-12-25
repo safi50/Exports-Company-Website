@@ -38,23 +38,23 @@ export const features = [
   {
     id: "feature-1",
     icon: star,
-    title: "Rewards",
+    title: "Reliable Trade",
     content:
-      "The best credit cards offer some tantalizing combinations of promotions and prizes",
+      "Reliability in trade means timely shipments, matching products specifications, and clear communication.",
   },
   {
     id: "feature-2",
     icon: shield,
     title: "100% Secured",
     content:
-      "We take proactive steps make sure your information and transactions are secure.",
+      "We focus on verified partners, clear documentation, and transparent processes.",
   },
   {
     id: "feature-3",
     icon: send,
-    title: "Balance Transfer",
+    title: "Global Reach",
     content:
-      "A balance transfer credit card can save you a lot of money in interest charges.",
+      "We operate across borders but think locally. Understanding market differences keep trade flowing smoothly.",
   },
 ];
 
@@ -62,25 +62,25 @@ export const feedback = [
   {
     id: "feedback-1",
     content:
-      "Money is only a tool. It will take you wherever you wish, but it will not replace you as the driver.",
-    name: "Herman Jensen",
-    title: "Founder & Leader",
+      "Working with this team has transformed our sourcing process. Their network of verified suppliers and attention to quality control has been exceptional.",
+    name: "Sarah Ahmed",
+    title: "Procurement Director",
     img: people01,
   },
   {
     id: "feedback-2",
     content:
-      "Money makes your life easier. If you're lucky to have it, you're lucky.",
-    name: "Steve Mark",
-    title: "Founder & Leader",
+      "They helped us expand into three new markets within a year. The reliability and transparency in every shipment gave us complete peace of mind.",
+    name: "Marcus Chen",
+    title: "Supply Chain Manager",
     img: people02,
   },
   {
     id: "feedback-3",
     content:
-      "It is usually people in the money business, finance, and international trade that are really rich.",
-    name: "Kenn Gallagher",
-    title: "Founder & Leader",
+      "From textiles to machinery, they've consistently delivered quality products on time. Their understanding of international trade regulations is invaluable.",
+    name: "Jennifer Costa",
+    title: "Operations Head",
     img: people03,
   },
 ];
@@ -88,18 +88,18 @@ export const feedback = [
 export const stats = [
   {
     id: "stats-1",
-    title: "User Active",
-    value: "3800+",
+    title: "Countries Served",
+    value: "25+",
   },
   {
     id: "stats-2",
-    title: "Trusted by Company",
-    value: "230+",
+    title: "Verified Suppliers",
+    value: "180+",
   },
   {
     id: "stats-3",
-    title: "Transaction",
-    value: "$230M+",
+    title: "Trade Volume",
+    value: "$50M+",
   },
 ];
 

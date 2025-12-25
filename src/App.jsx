@@ -1,6 +1,6 @@
 import React from 'react'
 import { 
-  Billing, 
+  TradeFocus, 
   Business, 
   CardDeal, 
   Clients, 
@@ -30,10 +30,10 @@ const App = () => {
         <div className={`${styles.boxWidth}`}>
           <Stats/>
           <Business/>
-          <Billing/>
+          <TradeFocus/>
           <CardDeal/>
           <Testimonials/>
-          <Clients/>
+          {/* <Clients/> */}
           <CTA/>
           <Footer/>     
         </div>
